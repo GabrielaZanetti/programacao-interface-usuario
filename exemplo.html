@@ -5,6 +5,10 @@
     <title>Exemplo</title>
 </head>
 <style>
+    * {
+        margin: 0;
+        box-sizing: border-box;
+    }
     h1 {
         color: blue;
     }
@@ -18,10 +22,13 @@
     }
     section {
         background-color: #f2f2f2;
-        border: 1px solid #bdbdbd;
         border-radius: 3px;
-        padding: 10px;
+        padding: 10px 0;
         width: 50%;
+    }
+    .section2 {
+        border: 1px solid #bdbdbd;
+        padding: 10px;
     }
     img {
         width: 50%;
@@ -33,7 +40,7 @@
         <p>Este é um paragrafo</p>
         <button>Clique Aqui</button>
     </section>
-    <section>
+    <section class="section2">
         <h2>Seção importante</h2>        
         <p>Este é uma seção importante com um conteudo relevante</p>
     </section>
