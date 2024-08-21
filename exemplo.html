@@ -33,7 +33,7 @@
     section {
         background-color: #f2f2f2;
         border-radius: 3px;
-        padding: 10px 0;
+        padding: 20px 0;
         width: 30%;
     }
     .section2 {
@@ -48,7 +48,7 @@
     <section>
         <h1>Bem vindo ao meu site</h1>
         <p>Este é um paragrafo</p>
-        <button>Clique Aqui</button>
+        <button id="clique">Clique Aqui</button>
     </section>
     <section class="section2">
         <h2>Seção importante</h2>        
@@ -56,4 +56,13 @@
     </section>
     <img src="https://www.unijui.edu.br/templates/template_unijui2016/images/logo.png" alt="logo">
 </body>
+<script>
+    function ClickBtn () {
+        alert('Você clicou no botão')
+    }
+
+    const element = document.getElementById('clique');
+
+    element.addEventListener("click", ClickBtn)
+</script>
 </html>
