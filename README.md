@@ -2,6 +2,9 @@
 
 Este repositório foi criado para armazenar e organizar os exemplos desenvolvidos durante a disciplina **Programação para Interface de Usuário** do curso de Ciência da Computação. Aqui, vou guardar os códigos e projetos apresentados em aula, que servirão como referência para estudos e como base para os trabalhos futuros.
 
+## Tecnologias e Ferramentas
+[![My Skills](https://skillicons.dev/icons?i=js,html,css)](https://skillicons.dev)
+
 ## Objetivo da Disciplina
 
 A disciplina tem como foco principal ensinar os conceitos e as técnicas necessárias para o desenvolvimento de interfaces de usuário (UIs) eficientes e intuitivas. Ao longo do curso, serão abordados aspectos como design de interfaces, usabilidade, acessibilidade e a implementação prática de UIs utilizando diferentes ferramentas e linguagens de programação.
