@@ -3,47 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Exemplo</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
-<style>
-    * {
-        margin: 0;
-        box-sizing: border-box;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-    body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    h1 {
-        color: blue;
-    }
-    h2 {
-        font-weight: bold;
-    }
-    p {
-        color: green;
-    }
-    button {
-        background-color: blue;
-        color: white;
-        padding: 5px 10px;
-    }
-    section {
-        background-color: #f2f2f2;
-        border-radius: 3px;
-        padding: 20px 0;
-        width: 30%;
-    }
-    .section2 {
-        border: 1px solid #bdbdbd;
-        padding: 20px 10px;
-    }
-    img {
-        max-width: 30%;
-    }
-</style>
 <body>
     <section>
         <h1>Bem vindo ao meu site</h1>
@@ -56,13 +17,5 @@
     </section>
     <img src="https://www.unijui.edu.br/templates/template_unijui2016/images/logo.png" alt="logo">
 </body>
-<script>
-    function ClickBtn () {
-        alert('Você clicou no botão')
-    }
-
-    const element = document.getElementById('clique');
-
-    element.addEventListener("click", ClickBtn)
-</script>
+<script src="./script.js"></script>
 </html>
