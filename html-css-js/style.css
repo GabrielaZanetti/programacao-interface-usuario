@@ -20,8 +20,13 @@ p {
 }
 button {
     background-color: blue;
+    cursor: pointer;
     color: white;
     padding: 5px 10px;
+}
+button:disabled {
+    background-color: rgba(0, 0, 255, 0.479);
+    cursor: no-drop;
 }
 section {
     background-color: #f2f2f2;
@@ -35,7 +40,6 @@ section {
 }
 img {
     max-width: 30%;
-}
-#img-gatinho {
-    margin-top: 20px;
+    max-height: 50vh;
+    margin: 10px;
 }
