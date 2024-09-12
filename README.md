@@ -3,7 +3,7 @@
 Este repositório foi criado para armazenar e organizar os exemplos desenvolvidos durante a disciplina **Programação para Interface de Usuário** do curso de Ciência da Computação. Aqui, vou guardar os códigos e projetos apresentados em aula, que servirão como referência para estudos e como base para os trabalhos futuros.
 
 ## Tecnologias e Ferramentas
-[![My Skills](https://skillicons.dev/icons?i=js,html,css,react)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=js,html,css,react,figma)](https://skillicons.dev)
 
 ## Objetivo da Disciplina
 
