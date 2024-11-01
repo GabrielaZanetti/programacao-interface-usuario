@@ -20,3 +20,12 @@ O repositório está organizado em pastas que representam os diferentes tópicos
 ## Observações Finais
 
 Este repositório é uma ferramenta pessoal de estudo. A ideia é que ele sirva como um ponto de referência rápido e prático durante e após a conclusão da disciplina. Com o tempo, os exemplos podem ser atualizados ou aprimorados conforme eu avance nas minhas habilidades e entendimento de interfaces de usuário.
+
+```
+git remote add origin https://github.com/GabrielaZanetti/programacao-interface-usuario.git
+```
+
+ou 
+```
+git clone https://github.com/GabrielaZanetti/programacao-interface-usuario.git
+```
