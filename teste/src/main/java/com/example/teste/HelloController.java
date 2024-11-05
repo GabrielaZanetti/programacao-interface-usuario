@@ -40,6 +40,10 @@ public class HelloController {
         }
     }
 
+    public static void main(String[] args) {
+        createTable();
+    }
+
     public void adicionarProduto(ActionEvent actionEvent) throws SQLException {
         Database data = new Database();
 
