@@ -9,13 +9,16 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.example.teste.HelloController">
+<?import javafx.scene.layout.HBox?>
+<VBox spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.6" fx:controller="com.example.teste.HelloController">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
 
-  <VBox alignment="CENTER" spacing="10">
+  <HBox>
     <Label text="Catálogo de Produtos" style="-fx-font-size: 18;" />
+  </HBox>
+  <VBox alignment="CENTER" spacing="10">
     <TextField fx:id="nomeField" promptText="Nome do Produto"/>
     <TextField fx:id="descricaoField" promptText="Descrição do Produto"/>
     <TextField fx:id="precoField" promptText="Preço"/>
