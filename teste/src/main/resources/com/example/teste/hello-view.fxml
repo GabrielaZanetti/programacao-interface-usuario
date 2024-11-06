@@ -14,12 +14,14 @@
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
 
-  <Label text="Catálogo de Produtos" style="-fx-font-size: 18;" />
-  <TextField fx:id="nomeField" promptText="Nome do Produto"/>
-  <TextField fx:id="descricaoField" promptText="Descrição do Produto"/>
-  <TextField fx:id="precoField" promptText="Preço"/>
-  <TextField fx:id="quantidadeField" promptText="Quantidade"/>
-  <Button text="Adicionar Produto" onAction="#adicionarProduto"/>
+  <VBox alignment="CENTER" spacing="10">
+    <Label text="Catálogo de Produtos" style="-fx-font-size: 18;" />
+    <TextField fx:id="nomeField" promptText="Nome do Produto"/>
+    <TextField fx:id="descricaoField" promptText="Descrição do Produto"/>
+    <TextField fx:id="precoField" promptText="Preço"/>
+    <TextField fx:id="quantidadeField" promptText="Quantidade"/>
+    <Button text="Adicionar Produto" onAction="#adicionarProduto"/>
+  </VBox>
 
   <TableView fx:id="tableView" prefHeight="200">
     <columns>
