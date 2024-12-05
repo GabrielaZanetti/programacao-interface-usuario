@@ -7,23 +7,20 @@ import Image from 'next/image';
 
 const Pomodoro: React.FC = () => {
     const [projeto, setProjeto] = useState<any>(null);
-    const [cronometro, setCronometro] = useState<number>(30 * 60); // Cronômetro Pomodoro
-    const [inicioCronometro, setInicioCronometro] = useState<boolean>(false); // Estado do cronômetro
-    const [focoCronometro, setFocoCronometro] = useState<number>(0); // Tempo total de foco
+    const [cronometro, setCronometro] = useState<number>(30 * 60);
+    const [inicioCronometro, setInicioCronometro] = useState<boolean>(false);
+    const [focoCronometro, setFocoCronometro] = useState<number>(0);
 
-    // Controle do cronômetro Pomodoro
     useEffect(() => {
         if (!inicioCronometro || cronometro <= 0) return;
-
         const interval = setInterval(() => {
             setCronometro((prevTime) => prevTime - 1);
-            setFocoCronometro((prevFocus) => prevFocus + 1); // Incrementa o foco
+            setFocoCronometro((prevFocus) => prevFocus + 1);
         }, 1000);
 
         return () => clearInterval(interval);
     }, [inicioCronometro, cronometro]);
 
-    // Carregar o projeto salvo no localStorage
     useEffect(() => {
         const projetoSalvo = localStorage.getItem('projetoAtivo');
         if (projetoSalvo) {

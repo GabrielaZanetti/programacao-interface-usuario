@@ -2,9 +2,13 @@ import Image from "next/image";
 import "./style.css";
 import Link from "next/link";
  
-export function Pomodoro() {
+interface PomodoroProps {
+    id_projeto: string;
+}
+
+export const Pomodoro: React.FC<PomodoroProps> = ({ id_projeto }) => {
     return (
-        <Link href='/pomodoro' className="container-pomodoro">
+        <Link href={`/pomodoro/${id_projeto}`} className="container-pomodoro">
             <Image src="/pomodoro.png" alt="Pomodoro" className="pomodoro-icon" width={50} height={50} />
         </Link>
     );

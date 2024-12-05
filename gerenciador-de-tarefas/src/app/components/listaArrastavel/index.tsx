@@ -142,7 +142,6 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
         const overIndex = spaceIndex ?? overItems.length;
         overItems.splice(overIndex, 0, movedItem);
   
-        // Atualiza a ordem e o status no Firestore
         atualizarOrdemEStatusNoFirestore(overColumnId, overItems);
         atualizarOrdemEStatusNoFirestore(activeColumnId, activeItems);
 
@@ -170,7 +169,6 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
   
         const updatedItems = arrayMove(items, oldIndex, newIndex);
   
-        // Atualiza a ordem e o status no Firestore
         atualizarOrdemEStatusNoFirestore(activeColumnId, updatedItems);
         if (setAltera) setAltera();
         return prevColumns.map((coluna) => {

@@ -13,7 +13,7 @@ import { buscarAtividadesPorProjeto } from '@/api/repositories/FirebaseAtividade
 import { buscarPorcentagemPorIdProjeto, buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRepository';
 
 interface ProjetoDetalhesParams {
-    id: string; // Altere conforme o formato de `params`
+    id: string;
 }
   
 interface ProjetoDetalhesProps {
@@ -88,7 +88,7 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
                     <div className="container-lista">
                         <ListaArrastavel lista={listaAtividades} tituloLista="Painel" listaProjetos={projeto} setAltera={fetchPorcentagem} />
                     </div>
-                    <Pomodoro />
+                    {idProjeto && <Pomodoro id_projeto={idProjeto} />}
                 </>
             : 
             carregando ? 

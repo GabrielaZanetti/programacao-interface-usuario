@@ -5,5 +5,5 @@ export interface Projeto {
   cor_projeto: string;
   porcentagem_atividade: number;
   id_usuario: string | null;
-  data_criacao: Date; // Novo campo
+  data_criacao: Date;
 }
