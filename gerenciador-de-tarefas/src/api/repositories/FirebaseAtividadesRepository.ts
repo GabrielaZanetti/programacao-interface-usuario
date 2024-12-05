@@ -1,21 +1,22 @@
-import { auth, db } from "@/infra/firebase/firebaseConfig";
+import { db } from "@/infra/firebase/firebaseConfig";
 import { Atividade, AtividadesAgrupadasPorStatus } from "@/utils/Atividade";
 import {
-  getFirestore,
   collection,
   addDoc,
   query,
   where,
   getDocs,
   doc,
-  updateDoc,
+  writeBatch,
 } from "firebase/firestore";
+import { recalcularPorcentagemProjeto } from "./FirebaseProjetosRepository";
 
 export async function adicionarAtividade(
   atividade: Omit<Atividade, "id_atividade">
 ): Promise<Atividade> {
   try {
     const docRef = await addDoc(collection(db, "Atividades"), atividade);
+    await recalcularPorcentagemProjeto(atividade.id_projeto)
 
     return { ...atividade, id: docRef.id };
   } catch (error) {
@@ -74,24 +75,20 @@ export async function buscarAtividadesPorProjeto(
   }
 }
 
-export const atualizarStatusAtividade = async (idAtividade: string, novoStatus: string) => {
-  const user = auth.currentUser;
+export const atualizarOrdemEStatusNoFirestore = async (columnId: string, atividades: any[]) => {
+  const batch = writeBatch(db);
 
-  if (!user) {
-    return { sucesso: false, erro: 'Usuário não autenticado' };
-  }
-
+  atividades.forEach(async (atividade, index) => {
+    const atividadeRef = doc(db, 'Atividades', atividade.id);
+    batch.update(atividadeRef, { ordem: index, status: columnId });
+  });
   try {
-    const atividadeRef = doc(db, 'Atividades', idAtividade);
-
-    await updateDoc(atividadeRef, {
-      status: novoStatus,
-      id_usuario: user.uid
+    await batch.commit();
+    
+    atividades.forEach(async (atividade, index) => {
+      await recalcularPorcentagemProjeto(atividade.id_projeto)
     });
-
-    return { sucesso: true };
   } catch (error) {
-    console.log(error);
-    return { sucesso: false, erro: error };
+    console.error('Erro ao atualizar ordem e status das atividades:', error);
   }
 };

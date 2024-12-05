@@ -1,4 +1,3 @@
-// src/infra/firebase/firebaseAuth.ts
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/infra/firebase/firebaseConfig';
 
