@@ -1,0 +1,10 @@
+.pomodoro-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.container-pomodoro {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}

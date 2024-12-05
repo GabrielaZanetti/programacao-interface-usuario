@@ -1,0 +1,102 @@
+@import url("@/globals.css");
+
+.container-listas {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.titulo-atividade {
+  margin-bottom: 13px;
+  font-size: 1.3em;
+}
+
+.descricao-atividade {
+  font-size: 1em;
+  font-family: "Ovo", serif;
+  color: #828282;
+}
+
+.identificador-atividade {
+  width: 25px;
+  height: 25px;
+  border-radius: 10px;
+}
+
+.titulo-coluna {
+  font-size: 1.4em;
+}
+
+.coluna-itens {
+  max-width: 350px;
+  padding: 8px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.container-item {
+  width: 350px;
+}
+
+.container-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.icon-nova-ativ {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-nova-atv {
+  outline: none;
+}
+
+.btn-nova-atv:hover {
+  filter: drop-shadow(5px 4px 2px rgba(0, 0, 0, 0.5));
+}
+
+.nova-ativ-item {
+  text-align: center;
+  width: 100%;
+  outline: none;
+}
+
+.cabecalho-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo-lista {
+  font-family: "Ovo", sans-serif;
+  font-size: 1rem;
+}
+
+.config-lista {
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  transition: background-color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.config-lista:hover {
+  border-color: #ddd;
+  background-color: #ccc;
+}
+
+.container-vazio {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-sem-dados {
+  width: 30%;
+}

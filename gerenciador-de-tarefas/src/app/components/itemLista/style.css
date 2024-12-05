@@ -1,0 +1,37 @@
+@import url('@/globals.css');
+
+.container-item {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 1px 4px 2px 1px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+    cursor: grab;
+    position: relative;
+}
+
+.titulo-atividade {
+    margin-bottom: 13px;
+    font-size: 1.3em;
+}
+
+.descricao-atividade {
+    font-size: 1em;
+    font-family: "Ovo", serif;
+    color: #828282;
+}
+
+.identificador-atividade {
+    width: 25px;
+    height: 25px;
+    border-radius: 10px;
+}
+
+.placeholder-item {
+    height: 120px;
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+    margin: 8px 0;
+}

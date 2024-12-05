@@ -1,0 +1,61 @@
+@import url("@/globals.css");
+
+.alerta-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 20px 40px;
+  border-radius: 10px;
+  background: #d9d9d987;
+  border: 1px solid #d9d9d9;
+  color: #000000;
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: slideDown 2s ease-out forwards, moveRight 2s ease-in-out 2s forwards;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes moveRight {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.alerta-sucesso {
+    background: #17c96487;
+    border-color: #17c964;
+    color: #000;
+}
+
+.alerta-erro {
+    background: #b3000087;
+    border-color: #b30000;
+    color: #fff;
+}
+
+.alerta-alerta {
+    background: #f5a52487;
+    border-color: #f5a524;
+    color: #000;
+}
+
+.alerta-info {
+    background: #006fee87;
+    border-color: #006fee;
+    color: #fff;
+}

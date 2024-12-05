@@ -1,0 +1,110 @@
+@import url('@/globals.css');
+
+.container-pomodoro {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.container-pages {
+    padding-right: 0;
+}
+
+.container-tempo {
+    width: 80%;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cronometro {
+    width: 35vh;
+    height: 35vh;
+    border-radius: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 8px solid var(--primary);
+    font-size: 2.3em;
+    font-family: "Ovo", serif;
+}
+
+.container-btns {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-pomodoro {
+    background-color: var(--backsecondary10);
+    border-radius: 10px;
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-pomodoro:hover {
+    background-color: #c6bfff;
+}
+
+.seta {
+    width: 15px;
+}
+
+.reset {
+    width: 20px;
+}
+
+.btn-reiniciar {
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.btn-reiniciar:hover {
+    background-color: var(--backsecondary10);
+}
+
+.container-tempo-total {
+    width: 30%;
+}
+
+.container-foco .titulo {
+    font-size: 1rem;
+    font-family: "Ovo", serif;
+}
+
+.container-foco .tempo {
+    margin-top: 15px;
+    font-size: 1.5rem;
+}
+
+.container-foco {
+    background-color: var(--primary);
+    color: #fff;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.atividades-andamento {
+    background-color: var(--backsecondary10);
+}
+
+.container-atividade-pomodoro {
+    padding: 40px;
+    border-radius: 20px 0 0 20px;
+    display: flex;
+}
+
+.titulo-projeto {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}

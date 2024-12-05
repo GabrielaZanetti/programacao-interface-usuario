@@ -1,0 +1,19 @@
+.container-cartao {
+  background-color: var(--backgroundLight);
+  padding: 2em;
+  border-radius: 50px;
+  height: auto;
+  width: 30%;
+  min-width: 360px;
+  text-align: center;
+  font-family: "Ovo", "Roboto", sans-serif;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.form {
+  width: 100%;
+}
