@@ -10,7 +10,7 @@ import { SemDados } from '@/components/semDados';
 import { AtividadesAgrupadasPorStatus } from '@/utils/Atividade';
 import { Projeto } from '@/utils/Projeto';
 import { buscarAtividadesPorProjeto } from '@/api/repositories/FirebaseAtividadesRepository';
-import { buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRepository';
+import { buscarPorcentagemPorIdProjeto, buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRepository';
 
 interface ProjetoDetalhesParams {
     id: string; // Altere conforme o formato de `params`
@@ -26,6 +26,7 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
     const [projeto, setListaProjetos] = useState<Projeto[]>([]);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState('');
+    const [porcentagem_atividade, setPorcentagemAtividade] = useState(0);
     
     useEffect(() => {
       const fetchParams = async () => {
@@ -50,6 +51,7 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
                         setCarregando(true);
                         const projetosList = await buscarProjetosPorUsuario(id_usuario, idProjeto);
                         setListaProjetos(projetosList);
+                        setPorcentagemAtividade(projetosList[0].porcentagem_atividade)
                     } catch (err) {
                         setCarregando(false);
                     }
@@ -61,9 +63,18 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
         }
     }, [idProjeto])
 
+    const fetchPorcentagem = () => {
+        setTimeout(async () => {
+            const porcentagem = await buscarPorcentagemPorIdProjeto(idProjeto);
+            if (porcentagem !== null) {
+                setPorcentagemAtividade(porcentagem);
+            }            
+        }, 1000);
+    };
+    
+
     return (
         <Home>
-            <>teste</>
             {projeto.length > 0 ?
                 <>
                     <div className="projeto-cabecalho">
@@ -72,10 +83,10 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
                             <div className="identificador-atividade" style={{ backgroundColor: projeto[0].cor_projeto }}></div>
                         </div>
                     <div className='projeto-descricao'>{projeto[0].desc_projeto}</div>
-                    <BarraPorcentagem percent={projeto[0].porcentagem_atividade} />
+                    <BarraPorcentagem percent={porcentagem_atividade} />
                     </div>
                     <div className="container-lista">
-                        <ListaArrastavel lista={listaAtividades} tituloLista="Painel" listaProjetos={projeto} />
+                        <ListaArrastavel lista={listaAtividades} tituloLista="Painel" listaProjetos={projeto} setAltera={fetchPorcentagem} />
                     </div>
                     <Pomodoro />
                 </>

@@ -1,47 +1,36 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
-import { isAuthenticated } from '@/utils/auth';
 import { MenuLateral } from "@/components/menuLateral";
 import Image from 'next/image';
 import "./globals.css";
+import { useAuth } from '@/utils/auth';
 interface HomeProps {
   children: React.ReactNode;
 }
 
 export const Home: React.FC<HomeProps> = ({ children }) => {
-  const [carregando, setCarregando] = useState(true);
-  const [logado, setLogado] = useState(false);
   const router = useRouter()
   const pathname = usePathname();
+  const { loading, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    setCarregando(false)
-    setLogado(isAuthenticated())
-    if (!isAuthenticated()) {
-      router.push("/login");
-    } else {
-      if (pathname == '/') {
-        router.push("/painel");
+    if (!loading) {
+      if (isAuthenticated) {
+        if (pathname == '/') {
+          router.push("/painel");
+        }
+      } else {
+        router.push("/login");
       }
     }
+    
     return;
-  }, [router]);
+  }, [router, loading]);
 
-  if (carregando) {
-    return (
-      <div className="pagina-erro">
-        <Image src="/logo.png" alt="Falha ao encontrar a página" className="img-error-page" width={500} height={500} />
-        <p className="mensagem-erro">
-          Carregando...
-        </p>
-      </div>
-    )
-  }
-  
-  if (!logado) {
+  if (loading) {
     return (
         <div className="pagina-erro">
           <Image   src="/logo.png" alt="Falha ao encontrar a página" className="img-error-page" width={500} height={500} />

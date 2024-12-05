@@ -3,22 +3,27 @@
 import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { isAuthenticated } from '@/utils/auth';
 import "./globals.css";
+import { useAuth } from '@/utils/auth';
 
 const Page = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { loading, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (isAuthenticated()) {
-      if (pathname.startsWith('/')) {
-        router.push("/painel");
+    if (!loading) {
+      if (isAuthenticated) {
+        if (pathname == '/') {
+          router.push("/painel");
+        }
+      } else {
+        router.push("/login");
       }
-    } else {
-      router.push("/login");
     }
-  }, [router]);
+    
+    return;
+  }, [router, loading]);
 
   return (
     <div className="pagina-erro">

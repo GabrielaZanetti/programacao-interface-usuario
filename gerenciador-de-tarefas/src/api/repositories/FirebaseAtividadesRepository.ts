@@ -78,7 +78,7 @@ export async function buscarAtividadesPorProjeto(
 export const atualizarOrdemEStatusNoFirestore = async (columnId: string, atividades: any[]) => {
   const batch = writeBatch(db);
 
-  atividades.forEach(async (atividade, index) => {
+  atividades.forEach(async (atividade, index) => {    
     const atividadeRef = doc(db, 'Atividades', atividade.id);
     batch.update(atividadeRef, { ordem: index, status: columnId });
   });

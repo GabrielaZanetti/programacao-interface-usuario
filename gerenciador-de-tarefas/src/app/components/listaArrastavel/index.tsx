@@ -23,12 +23,13 @@ import Alerta from '../alerta';
 import Select from '../select';
 import { Atividade, AtividadesAgrupadasPorStatus } from '@/utils/Atividade';
 import { Projeto } from '@/utils/Projeto';
-import { adicionarAtividade, atualizarStatusAtividade, buscarAtividadesPorProjeto } from '@/api/repositories/FirebaseAtividadesRepository';
+import { adicionarAtividade, atualizarOrdemEStatusNoFirestore } from '@/api/repositories/FirebaseAtividadesRepository';
 
 interface PropsItem {
   tituloLista: string;
   lista: AtividadesAgrupadasPorStatus[];
   listaProjetos: Projeto[]
+  setAltera?: () => void
 }
 
 function gerarIdAleatorio(tamanho: number = 10): string {
@@ -41,7 +42,7 @@ function gerarIdAleatorio(tamanho: number = 10): string {
   return id;
 }
 
-function ListaArrastavel({ lista, tituloLista, listaProjetos }: PropsItem) {
+function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: PropsItem) {
   const [listas, setListaAtividades] = useState<AtividadesAgrupadasPorStatus[]>([]);
   const [activeItem, setActiveItem] = useState<Atividade | null>(null);
   const [overColumn, setOverColumn] = useState<string | null>(null);
@@ -124,75 +125,63 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos }: PropsItem) {
   
     if (!activeColumnId || !overColumnId) return;
   
-    const itemId = active.id; // ID do item que foi arrastado
-    const novoStatus = overColumnId; // O status que será atribuído à atividade (o nome da coluna de destino)
-  
     if (activeColumnId !== overColumnId) {
-      // Chama a função para atualizar o status da atividade
-      const resultado = await atualizarStatusAtividade(itemId, novoStatus);
+      setListaAtividades((prevColumns) => {
+        const activeColumn = prevColumns.find((col) => col.nome_coluna === activeColumnId);
+        const overColumn = prevColumns.find((col) => col.nome_coluna === overColumnId);
   
-      if (resultado.sucesso) {
-        // Atualiza a lista localmente se o Firebase retornar sucesso
-        setListaAtividades((prevColumns) => {
-          const activeColumn = prevColumns.find(col => col.nome_coluna === activeColumnId);
-          const overColumn = prevColumns.find(col => col.nome_coluna === overColumnId);
+        if (!activeColumn || !overColumn) return prevColumns;
   
-          if (!activeColumn || !overColumn) return prevColumns;
+        const activeItems = [...activeColumn.atividades];
+        const overItems = [...overColumn.atividades];
   
-          const activeItems = [...activeColumn.atividades];
-          const overItems = [...overColumn.atividades];
+        const itemIndex = activeItems.findIndex((item) => item.id === active.id);
+        if (itemIndex === -1) return prevColumns;
   
-          const itemIndex = activeItems.findIndex((item) => item.id === itemId);
-          if (itemIndex === -1) return prevColumns;
+        const [movedItem] = activeItems.splice(itemIndex, 1);
+        const overIndex = spaceIndex ?? overItems.length;
+        overItems.splice(overIndex, 0, movedItem);
   
-          const [movedItem] = activeItems.splice(itemIndex, 1);
-          movedItem.status = novoStatus; // Atualiza o status da atividade movida
+        // Atualiza a ordem e o status no Firestore
+        atualizarOrdemEStatusNoFirestore(overColumnId, overItems);
+        atualizarOrdemEStatusNoFirestore(activeColumnId, activeItems);
+
+        if (setAltera) setAltera();
   
-          const overIndex = spaceIndex ?? overItems.length;
-          overItems.splice(overIndex, 0, movedItem);
-  
-          return prevColumns.map((coluna) => {
-            if (coluna.nome_coluna === activeColumnId) {
-              return { ...coluna, atividades: activeItems };
-            }
-            if (coluna.nome_coluna === overColumnId) {
-              return { ...coluna, atividades: overItems };
-            }
-            return coluna;
-          });
+        return prevColumns.map((coluna) => {
+          if (coluna.nome_coluna === activeColumnId) {
+            return { ...coluna, atividades: activeItems };
+          }
+          if (coluna.nome_coluna === overColumnId) {
+            return { ...coluna, atividades: overItems };
+          }
+          return coluna;
         });
-      } else {
-        // // Em caso de erro, retorna a atividade para a coluna original
-        // setListaAtividades((prevColumns) => {
-        //   const activeColumn = prevColumns.find(col => col.nome_coluna === activeColumnId);
-        //   const overColumn = prevColumns.find(col => col.nome_coluna === overColumnId);
+      });
+    } else {
+      setListaAtividades((prevColumns) => {
+        const activeColumn = prevColumns.find((col) => col.nome_coluna === activeColumnId);
   
-        //   if (!activeColumn || !overColumn) return prevColumns;
+        if (!activeColumn) return prevColumns;
   
-        //   const activeItems = [...activeColumn.atividades];
-        //   const overItems = [...overColumn.atividades];
+        const items = [...activeColumn.atividades];
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = spaceIndex ?? oldIndex;
   
-        //   const itemIndex = activeItems.findIndex((item) => item.id === itemId);
-        //   if (itemIndex === -1) return prevColumns;
+        const updatedItems = arrayMove(items, oldIndex, newIndex);
   
-        //   const [movedItem] = activeItems.splice(itemIndex, 1);
-        //   const overIndex = spaceIndex ?? overItems.length;
-        //   overItems.splice(overIndex, 0, movedItem);
-  
-        //   return prevColumns.map((coluna) => {
-        //     if (coluna.nome_coluna === activeColumnId) {
-        //       return { ...coluna, atividades: activeItems };
-        //     }
-        //     if (coluna.nome_coluna === overColumnId) {
-        //       return { ...coluna, atividades: overItems };
-        //     }
-        //     return coluna;
-        //   });
-        // });
-      }
+        // Atualiza a ordem e o status no Firestore
+        atualizarOrdemEStatusNoFirestore(activeColumnId, updatedItems);
+        if (setAltera) setAltera();
+        return prevColumns.map((coluna) => {
+          if (coluna.nome_coluna === activeColumnId) {
+            return { ...coluna, atividades: updatedItems };
+          }
+          return coluna;
+        });
+      });
     }
   };
-  
 
   const findColumnByItem = (itemId: string) => {
     const column = listas.find(({ atividades }) => 
@@ -248,6 +237,7 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos }: PropsItem) {
       setDescItem('')
       setTituloAtividade('')
       setProjeto('')
+      if (setAltera) setAltera();
     }
   }
   

@@ -1,6 +1,5 @@
 import { db } from "@/infra/firebase/firebaseConfig";
 import { Projeto } from "@/utils/Projeto";
-import { getIdUsuario } from "@/utils/auth";
 import { collection, addDoc, query, where, getDocs, updateDoc } from "firebase/firestore";
 
 export const adicionarProjeto = async (projeto: Projeto) => {
@@ -25,8 +24,6 @@ export const buscarProjetosPorUsuario = async (
   idProjeto?: string
 ): Promise<Projeto[]> => {
   const projetosRef = collection(db, 'Projetos');
-  const id_usuario = getIdUsuario();
-
   let q = query(projetosRef, where('id_usuario', '==', idUsuario));
 
   if (idProjeto) {
@@ -45,18 +42,14 @@ export const buscarProjetosPorUsuario = async (
 };
 
 export async function recalcularPorcentagemProjeto(id_projeto: string) {
-  const id_usuario = getIdUsuario();
-  if (!id_usuario) return;
   try {
     const q = query(collection(db, 'Atividades'), 
-      where('id_usuario', '==', id_usuario), 
       where('id_projeto', '==', id_projeto)
     );
     const querySnapshot = await getDocs(q);
 
     let totalAtividades = 0;
     let atividadesConcluidas = 0;
-    // console.log(totalAtividades);
 
     querySnapshot.forEach((doc) => {
       totalAtividades++;
@@ -68,7 +61,7 @@ export async function recalcularPorcentagemProjeto(id_projeto: string) {
     const porcentagemAtividade = totalAtividades > 0 
       ? (atividadesConcluidas / totalAtividades) * 100
       : 0;
-
+      
     await atualizarPorcentagemPorIdProjeto(id_projeto, porcentagemAtividade)
     return porcentagemAtividade;
   } catch (error) {
@@ -82,7 +75,6 @@ export async function atualizarPorcentagemPorIdProjeto(id_projeto: string, porce
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      console.error('Nenhum projeto encontrado com o id_projeto:', id_projeto);
       return;
     }
 
