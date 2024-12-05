@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 import { CardAcesso } from '@/components/cardAcesso';
 import Input from '@/components/input';
-import './style.module.css';
+import './style.css';
 import Link from 'next/link';
 import { FirebaseUserRepository } from '@/api/repositories/FirebaseUserRepository';
 import { getFirebaseErrorMessage } from '@/utils/firebaseErrorMessages';
