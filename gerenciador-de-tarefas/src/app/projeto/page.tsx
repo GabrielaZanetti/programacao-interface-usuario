@@ -12,6 +12,7 @@ import Alerta from '@/components/alerta';
 import { SemDados } from '@/components/semDados';
 import { Projeto } from '@/utils/Projeto';
 import { adicionarProjeto, buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRepository';
+import { useAuth } from '@/utils/auth';
 
 function gerarIdAleatorio(tamanho: number = 10): string {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -31,14 +32,13 @@ const Projetos: React.FC = () => {
     const [nomeProjeto, setNomeProjeto] = useState('');
     const [descProjeto, setDescProjeto] = useState('');
     const [corProjeto, setCorProjeto] = useState("#000000");
+    const { userId } = useAuth();
 
     const fetchProjetos = async () => {
-        const id_usuario = localStorage.getItem("id_usuario");
-
         try {
             setCarregando(true);
-            if (id_usuario) {
-                const projetosList = await buscarProjetosPorUsuario(id_usuario);
+            if (userId) {
+                const projetosList = await buscarProjetosPorUsuario(userId);
                 setListaProjetos(projetosList);
             } else {
                 setErro('Usuário não autenticado');
@@ -52,19 +52,19 @@ const Projetos: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchProjetos();
-    }, [])
+        if (userId) {
+            fetchProjetos();
+        }
+    }, [userId])
 
     const novoItem = async () => {
-        const id_usuario = localStorage.getItem("id_usuario");
-
         const novoProjeto: Projeto = {
             id_projeto: gerarIdAleatorio(12),
             titulo_projeto: nomeProjeto,
             desc_projeto: descProjeto,
             cor_projeto: corProjeto,
             porcentagem_atividade: 0,
-            id_usuario,
+            id_usuario: userId,
             data_criacao: new Date()
         };
 

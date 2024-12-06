@@ -25,9 +25,7 @@ function Cadastro() {
 
     const createUserUseCase = new FirebaseUserRepository();
     try {
-      const { uid, authToken } = await createUserUseCase.execute(email, senha, usuario);
-      localStorage.setItem("auth_token", authToken);
-      localStorage.setItem("id_usuario", uid);
+      await createUserUseCase.execute(email, senha, usuario);
 
       router.push("/painel");
     } catch (error: any) {

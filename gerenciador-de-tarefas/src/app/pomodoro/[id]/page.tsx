@@ -74,7 +74,7 @@ const Pomodoro: React.FC<ProjetoDetalhesProps> = ({ params }) => {
         return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     };
 
-    const concluirAtividade = async (event: React.MouseEvent<HTMLInputElement>, id: string) => {
+    const concluirAtividade = async (event: any, id: string) => {
         event.target.disabled = true;
         event.target.closest('.label-atividade').style.textDecoration = 'line-through';
         console.log(id);

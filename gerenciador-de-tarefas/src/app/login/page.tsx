@@ -22,10 +22,7 @@ function Login() {
     const authRepo = new FirebaseAuthRepository();
     setCarregando(true)
     try {
-      const { uid, token } = await authRepo.authenticate(email, senha);
-      
-      localStorage.setItem("auth_token", token);
-      localStorage.setItem("id_usuario", uid);
+      await authRepo.authenticate(email, senha);
       router.push('/painel');
     } catch (error: any) {
       console.log(error.code);

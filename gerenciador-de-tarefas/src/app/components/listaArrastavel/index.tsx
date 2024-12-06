@@ -25,6 +25,7 @@ import { Atividade, AtividadesAgrupadasPorStatus } from '@/utils/Atividade';
 import { Projeto } from '@/utils/Projeto';
 import { adicionarAtividade, atualizarOrdemEStatusNoFirestore } from '@/api/repositories/FirebaseAtividadesRepository';
 import Link from 'next/link';
+import { useAuth } from '@/utils/auth';
 
 interface PropsItem {
   tituloLista: string;
@@ -57,6 +58,8 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera, id_proj
   const [descItemNovo, setDescItem] = useState('');
   const [statusNovo, setStatusNovo] = useState('');
   const [projeto, setProjeto] = useState('');
+  const { userId } = useAuth();
+
   const status = [{
     nome: 'pendente',
   }, {
@@ -203,15 +206,13 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera, id_proj
   };
 
   const novoItem = async () => {
-    const id_usuario = localStorage.getItem("id_usuario");
-    
     try {
       if (carregando || !statusNovo || !descItemNovo) {
         return;
       }
       const projetoSelecionado = listaProjetos.find(projetos => projetos.id_projeto === projeto);
 
-      if (projetoSelecionado && id_usuario) {
+      if (projetoSelecionado && userId) {
         const novaAtividade: Atividade = {
           id: gerarIdAleatorio(12),
           titulo_atividade: tituloAtividade,
@@ -220,7 +221,7 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera, id_proj
           nome_projeto: projetoSelecionado.titulo_projeto,
           cor_projeto: projetoSelecionado.cor_projeto,
           id_projeto: projetoSelecionado.id_projeto,
-          id_usuario: id_usuario
+          id_usuario: userId
         };
 
         const response = await adicionarAtividade(novaAtividade);

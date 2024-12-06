@@ -2,11 +2,6 @@ import { useState, useEffect } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/infra/firebase/firebaseConfig';
 
-export const isAuthenticated = (): boolean => {
-    const token = localStorage.getItem("auth_token");
-    return !!token;
-};
-
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [userId, setUserId] = useState<string | null>(null);

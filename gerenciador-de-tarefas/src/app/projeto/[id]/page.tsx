@@ -12,6 +12,7 @@ import { buscarAtividadesPorProjeto } from '@/api/repositories/FirebaseAtividade
 import { buscarPorcentagemPorIdProjeto, buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRepository';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuth } from '@/utils/auth';
 
 interface ProjetoDetalhesParams {
     id: string;
@@ -28,6 +29,7 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState('');
     const [porcentagem_atividade, setPorcentagemAtividade] = useState(0);
+    const { userId } = useAuth();
     
     useEffect(() => {
       const fetchParams = async () => {
@@ -38,31 +40,27 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
     }, [params]);
 
     useEffect(() => {
-        if (idProjeto) {
-            const id_usuario = localStorage.getItem("id_usuario");
-        
-            if (id_usuario) {
-                const fetchAtividades = async () => {
-                    const atividadesAgrupadas = await buscarAtividadesPorProjeto(id_usuario, idProjeto);
-                    setListaAtividades(atividadesAgrupadas);
-                }
-                
-                const fetchProjetos = async () => {
-                    try {
-                        setCarregando(true);
-                        const projetosList = await buscarProjetosPorUsuario(id_usuario, idProjeto);
-                        setListaProjetos(projetosList);
-                        setPorcentagemAtividade(projetosList[0].porcentagem_atividade)
-                    } catch (err) {
-                        setCarregando(false);
-                    }
-                };
-                
-                fetchAtividades();
-                fetchProjetos();
+        if (idProjeto && userId) {
+            const fetchAtividades = async () => {
+                const atividadesAgrupadas = await buscarAtividadesPorProjeto(userId, idProjeto);
+                setListaAtividades(atividadesAgrupadas);
             }
+            
+            const fetchProjetos = async () => {
+                try {
+                    setCarregando(true);
+                    const projetosList = await buscarProjetosPorUsuario(userId, idProjeto);
+                    setListaProjetos(projetosList);
+                    setPorcentagemAtividade(projetosList[0].porcentagem_atividade)
+                } catch (err) {
+                    setCarregando(false);
+                }
+            };
+            
+            fetchAtividades();
+            fetchProjetos();
         }
-    }, [idProjeto])
+    }, [idProjeto, userId])
 
     const fetchPorcentagem = () => {
         setTimeout(async () => {

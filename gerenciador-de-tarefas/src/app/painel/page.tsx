@@ -11,6 +11,7 @@ import { buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRep
 import { Projeto } from '@/utils/Projeto';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/infra/firebase/firebaseConfig';
+import { useAuth } from '@/utils/auth';
 
 interface PropsProjeto {
     nome_user?: string
@@ -21,23 +22,23 @@ const Projetos: React.FC<PropsProjeto> = ({ nome_user = 'usuário', }) => {
     const [listaProjetos, setListaProjetos] = useState<Projeto[]>([]);
     const [carregando, setCarregando] = useState(false);
     const [nome_usurio, setNomeUsuario] = useState(nome_user);
+    const { userId } = useAuth();
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user && user.displayName) setNomeUsuario(user.displayName);
         });
 
-        const id_usuario = localStorage.getItem("id_usuario");
-        if (id_usuario) {
+        if (userId) {
             const fetchAtividades = async () => {
-                const atividadesAgrupadas = await buscarAtividadesPorProjeto(id_usuario);
+                const atividadesAgrupadas = await buscarAtividadesPorProjeto(userId);
                 setListaAtividades(atividadesAgrupadas);
             }
 
             const fetchProjetos = async () => {
                 try {
                     setCarregando(true);
-                    const projetosList = await buscarProjetosPorUsuario(id_usuario);
+                    const projetosList = await buscarProjetosPorUsuario(userId);
                     setListaProjetos(projetosList);
                 } catch (err) {
                     setCarregando(false);
@@ -49,7 +50,7 @@ const Projetos: React.FC<PropsProjeto> = ({ nome_user = 'usuário', }) => {
             fetchAtividades();
             fetchProjetos();
         }
-    }, [])
+    }, [userId])
 
     return (
         <Home>
