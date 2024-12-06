@@ -5,7 +5,6 @@ import { BarraPorcentagem } from '@/components/barraPorcentage';
 import { Home } from '@/layout-page';
 import './style.css';
 import ListaArrastavel from '@/components/listaArrastavel';
-import { Pomodoro } from '@/components/pomodoro';
 import { SemDados } from '@/components/semDados';
 import { AtividadesAgrupadasPorStatus } from '@/utils/Atividade';
 import { Projeto } from '@/utils/Projeto';
@@ -92,9 +91,8 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
                     <BarraPorcentagem percent={porcentagem_atividade} />
                     </div>
                     <div className="container-lista">
-                        <ListaArrastavel lista={listaAtividades} tituloLista="Painel" listaProjetos={projeto} setAltera={fetchPorcentagem} />
+                        <ListaArrastavel lista={listaAtividades} tituloLista="Painel" listaProjetos={projeto} setAltera={fetchPorcentagem} id_projeto={projeto[0].id_projeto} />
                     </div>
-                    {idProjeto && <Pomodoro id_projeto={idProjeto} />}
                 </>
             : 
             carregando ? 

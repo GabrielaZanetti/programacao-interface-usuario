@@ -24,12 +24,14 @@ import Select from '../select';
 import { Atividade, AtividadesAgrupadasPorStatus } from '@/utils/Atividade';
 import { Projeto } from '@/utils/Projeto';
 import { adicionarAtividade, atualizarOrdemEStatusNoFirestore } from '@/api/repositories/FirebaseAtividadesRepository';
+import Link from 'next/link';
 
 interface PropsItem {
   tituloLista: string;
   lista: AtividadesAgrupadasPorStatus[];
   listaProjetos: Projeto[]
-  setAltera?: () => void
+  setAltera?: () => void,
+  id_projeto?: string
 }
 
 function gerarIdAleatorio(tamanho: number = 10): string {
@@ -42,7 +44,7 @@ function gerarIdAleatorio(tamanho: number = 10): string {
   return id;
 }
 
-function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: PropsItem) {
+function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera, id_projeto }: PropsItem) {
   const [listas, setListaAtividades] = useState<AtividadesAgrupadasPorStatus[]>([]);
   const [activeItem, setActiveItem] = useState<Atividade | null>(null);
   const [overColumn, setOverColumn] = useState<string | null>(null);
@@ -51,10 +53,17 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
   const [modalItem, setModalItem] = useState(false);
-  const [colunaItem, setColunaItem] = useState('');
   const [tituloAtividade, setTituloAtividade] = useState('');
   const [descItemNovo, setDescItem] = useState('');
+  const [statusNovo, setStatusNovo] = useState('');
   const [projeto, setProjeto] = useState('');
+  const status = [{
+    nome: 'pendente',
+  }, {
+    nome: 'em andamento',
+  }, {
+    nome: 'concluído',
+  }];
 
   useEffect(() => {
     setListaAtividades(lista)
@@ -193,25 +202,21 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
     return column ? column : null;
   };
 
-  const criarNovaAtiv = (nome_coluna: string) => {
-    setColunaItem(nome_coluna);
-    setModalItem(true)
-  };
-
   const novoItem = async () => {
     const id_usuario = localStorage.getItem("id_usuario");
     
     try {
-      if (carregando || !colunaItem || !descItemNovo) {
+      if (carregando || !statusNovo || !descItemNovo) {
         return;
       }
       const projetoSelecionado = listaProjetos.find(projetos => projetos.id_projeto === projeto);
+
       if (projetoSelecionado && id_usuario) {
         const novaAtividade: Atividade = {
           id: gerarIdAleatorio(12),
           titulo_atividade: tituloAtividade,
           descricao_atividade: descItemNovo,
-          status: colunaItem,
+          status: statusNovo,
           nome_projeto: projetoSelecionado.titulo_projeto,
           cor_projeto: projetoSelecionado.cor_projeto,
           id_projeto: projetoSelecionado.id_projeto,
@@ -238,6 +243,13 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
       if (setAltera) setAltera();
     }
   }
+
+  const formatarString = (input: string) => {
+    let resultado = input.replace(/\s+/g, '_');
+    resultado = resultado.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
+    return resultado;
+  }
   
   return (
     <>
@@ -255,12 +267,9 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
         >
           <div className='container-listas'>
             {listas.map(({ nome_coluna, atividades }, index) => (
-                <div key={index} className="coluna-itens">
+                <div key={index} className={`coluna-itens ${formatarString(nome_coluna)}`}>
                   <div className="container-titulo">
                     <h3 className="titulo-coluna">{nome_coluna}</h3>
-                    <button className="btn-nova-atv" title="Criar nova atividade" onClick={() => criarNovaAtiv(nome_coluna)}>
-                      <Image src="/plus.png" alt="Nova atividade" className="icon-nova-ativ" width={20} height={20} />
-                    </button>
                   </div>
                   <SortableContext
                     items={atividades}
@@ -283,9 +292,6 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
                     : (
                       <PlaceholderItem id={nome_coluna} colunaOrigen={draggedFromColumn} />
                     )}
-                    <button className="nova-ativ-item" onClick={() => criarNovaAtiv(nome_coluna)}>
-                      Criar uma nova atividade
-                    </button>
                   </SortableContext>
                 </div>
               ))}
@@ -311,7 +317,7 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
         <Modal
           titulo="Adicionar Item"
           onClose={() => setModalItem(false)}
-          btn={<button className='btn-primary' onClick={novoItem} disabled={!descItemNovo || !tituloAtividade || !projeto || carregando}>
+          btn={<button className='btn-primary' onClick={novoItem} disabled={!descItemNovo || !tituloAtividade || !projeto || !statusNovo || carregando}>
             {carregando ? 'Salvando...' : 'Salvar'}
           </button>}
           >
@@ -328,11 +334,22 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera }: Props
             label='desc-item'
           />
           <Select array={listaProjetos} chave='id_projeto' text='titulo_projeto' label='Projetos' value={projeto} changeValue={setProjeto} />
+          <Select array={status} chave='nome' text='nome' label='Status' value={statusNovo} changeValue={setStatusNovo} />
         </Modal>
       }
       {erro &&
         <Alerta mensagem={erro} tipo='erro' />
       }
+      <div className='container-btns'>
+        {id_projeto &&
+          <Link href={`/pomodoro/${id_projeto}`} className="container-pomodoro-icon">
+              <Image src="/pomodoro.png" alt="Pomodoro" className="pomodoro-icon" width={35} height={35} />
+          </Link>
+        }
+        <button className="nova-atividade" title="Criar nova atividade" onClick={() => setModalItem(true)}>
+          <Image src="/plus.png" alt="Nova atividade" className="icon-nova-ativ" width={20} height={20} />
+        </button>
+      </div>
     </>
   );
 }

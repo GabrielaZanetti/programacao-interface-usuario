@@ -27,17 +27,32 @@
 
 .titulo-coluna {
   font-size: 1.4em;
+  text-transform: capitalize;
 }
 
 .coluna-itens {
-  max-width: 350px;
+  min-width: 350px;
   padding: 8px;
   margin-bottom: 20px;
   flex: 1;
+  box-sizing: border-box;
+  background: #f7f7f7b3;
+  border: 1px solid #f7f7f7;
+  border-radius: 10px;
+}
+
+.em_andamento {
+  background: #f1f8fbb3;
+  border-color: #f1f8fb;
+}
+
+.concluido {
+  background: #f4f8f3b3;
+  border-color: #f4f8f3;
 }
 
 .container-item {
-  width: 350px;
+  width: 100%;
 }
 
 .container-titulo {
@@ -99,4 +114,24 @@
 
 .img-sem-dados {
   width: 30%;
+}
+
+.container-btns {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.nova-atividade {
+  background-color: var(--backsecondary10);
+  border-radius: 10px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+  &:hover{
+      background-color: var(--backsecondary40);
+  }
 }
