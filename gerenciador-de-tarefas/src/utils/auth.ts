@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/infra/firebase/firebaseConfig';
 
 export const isAuthenticated = (): boolean => {
@@ -14,7 +14,6 @@ export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const auth = getAuth();    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUserId(currentUser.uid)

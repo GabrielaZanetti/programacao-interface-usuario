@@ -8,7 +8,7 @@ interface PomodoroProps {
 
 export const Pomodoro: React.FC<PomodoroProps> = ({ id_projeto }) => {
     return (
-        <Link href={`/pomodoro/${id_projeto}`} className="container-pomodoro">
+        <Link href={`/pomodoro/${id_projeto}`} className="container-pomodoro-icon">
             <Image src="/pomodoro.png" alt="Pomodoro" className="pomodoro-icon" width={50} height={50} />
         </Link>
     );

@@ -43,7 +43,6 @@ export async function buscarAtividadesPorProjeto(
           where('id_usuario', '==', id_usuario)
         );
 
-
     const querySnapshot = await getDocs(q);
     const agrupadoPorStatus: Record<string, Atividade[]> = {};
 
@@ -88,6 +87,21 @@ export const atualizarOrdemEStatusNoFirestore = async (columnId: string, ativida
     atividades.forEach(async (atividade, index) => {
       await recalcularPorcentagemProjeto(atividade.id_projeto)
     });
+  } catch (error) {
+    console.error('Erro ao atualizar ordem e status das atividades:', error);
+  }
+};
+
+export const atualizaStatus = async (status: string, id_atividade: string, id_projeto: string) => {
+  const batch = writeBatch(db);
+  const atividadeRef = doc(db, 'Atividades', id_atividade);
+
+  batch.update(atividadeRef, { status: status });
+
+  try {
+    await batch.commit();
+    
+    await recalcularPorcentagemProjeto(id_projeto)
   } catch (error) {
     console.error('Erro ao atualizar ordem e status das atividades:', error);
   }

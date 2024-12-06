@@ -9,9 +9,10 @@ import "./globals.css";
 import { useAuth } from '@/utils/auth';
 interface HomeProps {
   children: React.ReactNode;
+  _class?: string
 }
 
-export const Home: React.FC<HomeProps> = ({ children }) => {
+export const Home: React.FC<HomeProps> = ({ children, _class }) => {
   const router = useRouter()
   const pathname = usePathname();
   const { loading, isAuthenticated } = useAuth();
@@ -44,7 +45,7 @@ export const Home: React.FC<HomeProps> = ({ children }) => {
   return (
     <div className="container-principal">
         <MenuLateral />
-        <main className='container-pages'>
+        <main className={`container-pages ${_class}`} >
           {children}
         </main>
     </div>
