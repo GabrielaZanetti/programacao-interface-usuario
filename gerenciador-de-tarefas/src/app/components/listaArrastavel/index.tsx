@@ -340,14 +340,14 @@ function ListaArrastavel({ lista, tituloLista, listaProjetos, setAltera, id_proj
       {erro &&
         <Alerta mensagem={erro} tipo='erro' />
       }
-      <div className='container-btns'>
+      <div className='container-btn-lista'>
         {id_projeto &&
           <Link href={`/pomodoro/${id_projeto}`} className="container-pomodoro-icon">
-              <Image src="/pomodoro.png" alt="Pomodoro" className="pomodoro-icon" width={35} height={35} />
+              <Image src="/pomodoro.png" alt="Pomodoro" className="pomodoro-icon" width={20} height={20} />
           </Link>
         }
         <button className="nova-atividade" title="Criar nova atividade" onClick={() => setModalItem(true)}>
-          <Image src="/plus.png" alt="Nova atividade" className="icon-nova-ativ" width={20} height={20} />
+          <Image src="/plus.png" alt="Nova atividade" className="icon-nova-ativ" width={18} height={18} />
         </button>
       </div>
     </>

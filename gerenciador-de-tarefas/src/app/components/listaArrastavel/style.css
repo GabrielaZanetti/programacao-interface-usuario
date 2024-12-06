@@ -62,11 +62,6 @@
   margin-bottom: 25px;
 }
 
-.icon-nova-ativ {
-  width: 20px;
-  height: 20px;
-}
-
 .btn-nova-atv {
   outline: none;
 }
@@ -116,7 +111,7 @@
   width: 30%;
 }
 
-.container-btns {
+.container-btn-lista {
   position: fixed;
   right: 40px;
   bottom: 40px;
@@ -127,11 +122,15 @@
 }
 
 .nova-atividade {
-  background-color: var(--backsecondary10);
+  padding: 15px;
+}
+.nova-atividade, .container-pomodoro-icon {
+  border: 1px solid var(--backsecondary10);
+  background-color: var(--backgroundLight);
   border-radius: 10px;
   padding: 10px;
   transition: background-color 0.3s ease;
   &:hover{
-      background-color: var(--backsecondary40);
+      background-color: var(--backsecondary10);
   }
 }
