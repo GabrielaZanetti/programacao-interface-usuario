@@ -26,3 +26,12 @@
 .projeto-cabecalho {
     margin-bottom: 30px;
 }
+
+.btn-voltar-projetos {
+    display: flex;
+    gap: 8px;
+    width: 160px !important;
+    padding: 10px !important;
+    box-sizing: content-box;
+    align-items: center;
+}

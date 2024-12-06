@@ -92,11 +92,9 @@ const Projetos: React.FC = () => {
 
     return (
         <Home>
-            <div className="container-btn">
-                <button className="config-lista" title='Adicionar coluna' onClick={() => setModal(true)}>
-                    <Image src="/plus.png" className="config-icon" alt="Logo da empresa" width={20} height={20} />
-                </button>
-            </div>
+            <button className="novo-projeto" title='Criar Projeto' onClick={() => setModal(true)}>
+                <Image src="/plus.png" className="config-icon" alt="Logo da empresa" width={20} height={20} />
+            </button>
             {carregando ? 
                 <div id="carregando">
                     <span className="loader"></span>

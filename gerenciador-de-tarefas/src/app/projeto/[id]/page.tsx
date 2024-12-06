@@ -11,6 +11,8 @@ import { AtividadesAgrupadasPorStatus } from '@/utils/Atividade';
 import { Projeto } from '@/utils/Projeto';
 import { buscarAtividadesPorProjeto } from '@/api/repositories/FirebaseAtividadesRepository';
 import { buscarPorcentagemPorIdProjeto, buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRepository';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProjetoDetalhesParams {
     id: string;
@@ -75,6 +77,10 @@ const ProjetoDetalhes: React.FC<ProjetoDetalhesProps> = ({ params }) => {
 
     return (
         <Home>
+            <Link href={`/projeto`} passHref className='btn-secondary btn-voltar-projetos'>
+                <Image src="/setaVoltar.png" alt="Voltar ao projeto" className="seta-icon" width={10} height={10} />
+                Voltar aos projetos
+            </Link>
             {projeto.length > 0 ?
                 <>
                     <div className="projeto-cabecalho">

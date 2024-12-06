@@ -61,9 +61,15 @@
     }
 }
 
-.container-btn {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 25px;
-  }
+.novo-projeto {
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    background-color: var(--backsecondary10);
+    border-radius: 10px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+    &:hover{
+        background-color: var(--backsecondary40);
+    }
+}
