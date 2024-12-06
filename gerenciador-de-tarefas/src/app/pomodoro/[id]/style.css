@@ -102,7 +102,7 @@
     flex-direction: column;
 }
 
-.titulo-projeto {
+.titulo-projeto-pomodoro {
     display: flex;
     justify-content: center;
     width: 100%;

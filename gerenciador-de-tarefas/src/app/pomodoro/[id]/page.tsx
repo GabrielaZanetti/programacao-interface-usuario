@@ -151,7 +151,7 @@ const Pomodoro: React.FC<ProjetoDetalhesProps> = ({ params }) => {
                             </div>
                             {projeto && (
                                 <div className="container-atividade-pomodoro atividades-andamento">
-                                    <div className="titulo-projeto">
+                                    <div className="titulo-projeto-pomodoro">
                                         {projeto.titulo_projeto}
                                     </div>
                                     <div className="lista-atividades">
