@@ -9,6 +9,7 @@ import { atualizaStatus, buscarAtividadesPorProjeto } from '@/api/repositories/F
 import { buscarProjetosPorUsuario } from '@/api/repositories/FirebaseProjetosRepository';
 import { Projeto } from '@/utils/Projeto';
 import { AtividadesAgrupadasPorStatus } from '@/utils/Atividade';
+import Link from 'next/link';
 
 interface ProjetoDetalhesParams {
     id: string;
@@ -75,19 +76,19 @@ const Pomodoro: React.FC<ProjetoDetalhesProps> = ({ params }) => {
 
     const concluirAtividade = async (event: React.MouseEvent<HTMLInputElement>, id: string) => {
         event.target.disabled = true;
+        event.target.closest('.label-atividade').style.textDecoration = 'line-through';
         console.log(id);
 
         try {
             await atualizaStatus('concluído', id, idProjeto)
-            
+            event.target.closest('.label-atividade').classList.add('elemento-removido');
+            setTimeout(() => {
+                event.target.closest('.label-atividade').remove();
+            }, 2000);
         } catch (error) {
-            console.log(error);
-            
-        } finally {
             event.target.disabled = false;
-            event.target.closest('.label-atividade').remove();
+            event.target.closest('.label-atividade').style.textDecoration = 'auto';
         }
-        
     }
 
     return (
@@ -101,78 +102,84 @@ const Pomodoro: React.FC<ProjetoDetalhesProps> = ({ params }) => {
                     </div>
                 </div>
             :
-                <div className="container-pomodoro">
-                    <div className="container-tempo">
-                        <div className="cronometro">
-                            {formatTime(cronometro)}
-                        </div>
-                        <div className="container-btns">
-                            {inicioCronometro ? (
-                                <button
-                                    className="btn btn-pomodoro"
-                                    title="Pausar concentração"
-                                    onClick={() => setInicioCronometro(!inicioCronometro)}
-                                >
-                                    Pausar concentração
-                                    <Image src="/pouse.png" className="seta" alt="Pausar concentração" width={25} height={25} />
-                                </button>
-                            ) : (
-                                <button
-                                    className="btn btn-pomodoro"
-                                    title="Comece a se concentrar"
-                                    onClick={() => setInicioCronometro(!inicioCronometro)}
-                                >
-                                    Comece a se concentrar
-                                    <Image src="/seta.png" className="seta" alt="Comece a se concentrar" width={25} height={25} />
-                                </button>
-                            )}
-                            <button
-                                className="btn-reiniciar"
-                                title="Resetar cronometro"
-                                onClick={() => {
-                                    setCronometro(30 * 60);
-                                    setInicioCronometro(false);
-                                }}
-                            >
-                                <Image src="/reiniciar.png" className="reset" alt="Resetar cronômetro" width={25} height={25} />
-                            </button>
-                        </div>
-                    </div>
-                    <div className="container-tempo-total">
-                        <div className="container-atividade-pomodoro container-foco">
-                            <div className="titulo">Tempo total em foco hoje:</div>
-                            <div className="tempo">{formatTime(focoCronometro)}</div>
-                        </div>
-                        {projeto && (
-                            <div className="container-atividade-pomodoro atividades-andamento">
-                                <div className="titulo-projeto">
-                                    {projeto.titulo_projeto}
-                                </div>
-                                <div className="lista-atividades">
-                                    {atividades.map(({ nome_coluna, atividades }, index) => {
-                                        if (nome_coluna != 'concluído' && atividades.length > 0) {
-                                            return (
-                                                <div className="container-tipo-atividade" key={index}>
-                                                    <div className="desc-tipo">{nome_coluna}</div>
-                                                    <div className="container-listas-atividades">
-                                                        {atividades.map(({ titulo_atividade, id }) => {
-                                                            return (
-                                                                <div className="label-atividade" key={id}>
-                                                                    <div className="titulo-atividade">{titulo_atividade}</div>
-                                                                    <input type="checkbox" onClick={(event) => concluirAtividade(event, id)} />
-                                                                </div>
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </div>
-                                            )
-                                        }
-                                    })}
-                                </div>
+                <>
+                    <Link href={`/projeto/${idProjeto}`} passHref className='btn-secondary btn-voltar'>
+                        <Image src="/setaVoltar.png" alt="Voltar ao projeto" className="seta-icon" width={10} height={10} />
+                        Voltar ao projeto
+                    </Link>
+                    <div className="container-pomodoro">
+                        <div className="container-tempo">
+                            <div className="cronometro">
+                                {formatTime(cronometro)}
                             </div>
-                        )}
+                            <div className="container-btns">
+                                {inicioCronometro ? (
+                                    <button
+                                        className="btn btn-pomodoro"
+                                        title="Pausar concentração"
+                                        onClick={() => setInicioCronometro(!inicioCronometro)}
+                                    >
+                                        Pausar concentração
+                                        <Image src="/pouse.png" className="seta" alt="Pausar concentração" width={25} height={25} />
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="btn btn-pomodoro"
+                                        title="Comece a se concentrar"
+                                        onClick={() => setInicioCronometro(!inicioCronometro)}
+                                    >
+                                        Comece a se concentrar
+                                        <Image src="/seta.png" className="seta" alt="Comece a se concentrar" width={25} height={25} />
+                                    </button>
+                                )}
+                                <button
+                                    className="btn-reiniciar"
+                                    title="Resetar cronometro"
+                                    onClick={() => {
+                                        setCronometro(30 * 60);
+                                        setInicioCronometro(false);
+                                    }}
+                                >
+                                    <Image src="/reiniciar.png" className="reset" alt="Resetar cronômetro" width={25} height={25} />
+                                </button>
+                            </div>
+                        </div>
+                        <div className="container-tempo-total">
+                            <div className="container-atividade-pomodoro container-foco">
+                                <div className="titulo">Tempo total em foco hoje:</div>
+                                <div className="tempo">{formatTime(focoCronometro)}</div>
+                            </div>
+                            {projeto && (
+                                <div className="container-atividade-pomodoro atividades-andamento">
+                                    <div className="titulo-projeto">
+                                        {projeto.titulo_projeto}
+                                    </div>
+                                    <div className="lista-atividades">
+                                        {atividades.map(({ nome_coluna, atividades }, index) => {
+                                            if (nome_coluna != 'concluído' && atividades.length > 0) {
+                                                return (
+                                                    <div className="container-tipo-atividade" key={index}>
+                                                        <div className="desc-tipo">{nome_coluna}</div>
+                                                        <div className="container-listas-atividades">
+                                                            {atividades.map(({ titulo_atividade, id }) => {
+                                                                return (
+                                                                    <div className="label-atividade" key={id}>
+                                                                        <div className="titulo-atividade">{titulo_atividade}</div>
+                                                                        <input type="checkbox" onClick={(event) => concluirAtividade(event, id)} />
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
+                </>
             }
         </Home>
     );
